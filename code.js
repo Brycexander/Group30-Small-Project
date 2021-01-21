@@ -1,4 +1,4 @@
-var urlBase = 'http://165.227.76.141/API';
+var urlBase = 'http://numpal.xyz/API';
 var extension = 'php';
 
 var userId = 0;
