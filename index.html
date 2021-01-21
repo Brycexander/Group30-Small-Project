@@ -1,22 +1,42 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<title>COP 4331 LAMP Stack Demo</title>
-	<script type="text/javascript" src="js/md5.js"></script>
-	<script type="text/javascript" src="js/code.js"></script>
-    <link href="css/styles.css" rel="stylesheet">	
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Contact Manager</title>
 </head>
+
 <body>
+    <div class="login-div">
+        <form action="" class="form">
+            <h2>Login</h2>
+            <div class="input-div">
+                <input type="text" name="loginUser" id="loginUser" required>
+                <label for="loginUser">Username</label>
+            </div>
+            <div class="input-div">
+                <input type="password" name="loginPassword" id="loginPassword" required>
+                <label for="loginPassword">Password</label>
+            </div>
+            <input type="submit" value="Login" class="submit-btn">
+            <a href="#forgot-pw" class="forgot-pw">Forgot your password?</a>
+            <p>New to Contact Manager? <a href="#register" class="register">Sign up now!</a></p>
+        </form>
 
-<h1 id="title">COP 4331 LAMP Stack Demo</h1>
-
-<div id="loginDiv">
-	<span id="inner-title">PLEASE LOG IN</span>
-	<input type="text" id="loginName" placeholder="Username" /><br />
-	<input type="password" id="loginPassword" placeholder="Password"/><br />
-	<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Do It </button>
-	<span id="loginResult"></span>
-</div>
-
+        <div id="forgot-pw">
+            <form action="" class="form">
+                <a href="#" class="close">&times;</a>
+                <h2>Reset Password</h2>
+                <div class="input-div">
+                    <input type="email" name="email" id="email" placeholder="example@mail.com" required>
+                    <label for="email">Email</label>
+                </div>
+                <input type="submit" value="Submit" class="submit-btn">
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>
