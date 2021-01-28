@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
     <link rel="stylesheet" href="css/styles.css">
-    <title>Contact Manager</title>
+    <title>Numpal Contact Manager</title>
 </head>
 
 <body>
@@ -13,27 +15,40 @@
         <form action="" class="form">
             <h2>Login</h2>
             <div class="input-div">
-                <input type="text" name="loginUser" id="loginUser" required>
-                <label for="loginUser">Username</label>
+                <input type="text" name="loginName" id="loginName" required>
+                <label for="loginName">Username</label>
             </div>
             <div class="input-div">
                 <input type="password" name="loginPassword" id="loginPassword" required>
                 <label for="loginPassword">Password</label>
             </div>
-            <input type="submit" value="Login" class="submit-btn">
-            <a href="#forgot-pw" class="forgot-pw">Forgot your password?</a>
-            <p>New to Contact Manager? <a href="#register" class="register">Sign up now!</a></p>
+            <input type="submit" value="Login" class="submit-btn" onclick="doLogin();">
+            <span id="loginResult"></span>
+            <p>New member? <a href="#register" class="register">Sign up now!</a></p>
         </form>
 
-        <div id="forgot-pw">
+        <div id="register">
             <form action="" class="form">
                 <a href="#" class="close">&times;</a>
-                <h2>Reset Password</h2>
+                <h2>Create New Account</h2>
                 <div class="input-div">
-                    <input type="email" name="email" id="email" placeholder="example@mail.com" required>
-                    <label for="email">Email</label>
+                    <input type="text" name="firstName" id="firstName" required>
+                    <label for="firstName">First Name</label>
                 </div>
-                <input type="submit" value="Submit" class="submit-btn">
+                <div class="input-div">
+                    <input type="text" name="lastName" id="lastName" required>
+                    <label for="lastName">Last Name</label>
+                </div>
+                <div class="input-div">
+                    <input type="text" name="registerName" id="registerName" required>
+                    <label for="registerName">Username</label>
+                </div>
+                <div class="input-div">
+                    <input type="password" name="registerPassword" id="registerPassword" required>
+                    <label for="registerPassword">Password</label>
+                </div>
+                <input type="submit" value="Register" class="submit-btn" onclick="doRegister();">
+                <span id="registerResult"></span>
             </form>
         </div>
     </div>
