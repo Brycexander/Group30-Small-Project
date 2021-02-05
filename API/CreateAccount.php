@@ -15,11 +15,24 @@
 	}
 	else
 	{
-		$sql = "INSERT INTO Users (FirstName, LastName, Login, Password) VALUES ('" . $firstName . "','" . $lastName . "', '" . $login . "','" . $password . "')";
-		if( $result = $conn->query($sql) != TRUE )
+		$sql = "SELECT ID,firstName,lastName FROM Users where Login='" . $login . "'";
+		$result = $conn->query($sql);
+		if ($result->num_rows > 0)
 		{
-			returnWithError( $conn->error );
+			returnWithError( "Login already exists" );
 		}
+		else
+		{
+			$sql = "INSERT INTO Users (FirstName, LastName, Login, Password) VALUES ('" . $firstName . "','" . $lastName . "', '" . $login . "','" . $password . "')";
+			if( $result = $conn->query($sql) != TRUE )
+			{
+				returnWithError( $conn->error );
+			}
+		}
+		// if( $result = $conn->query($sql) != TRUE )
+		// {
+		// 	returnWithError( $conn->error );
+		// }
     // else
     // {
     //   // $row = $result->fetch_assoc();
