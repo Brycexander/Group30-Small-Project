@@ -36,13 +36,14 @@ function doLogin() {
 			document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
 			return;
 		}
-
 		firstName = jsonObject.firstName;
 		lastName = jsonObject.lastName;
+   
 
 		saveCookie();
-
+    
 		window.location.href = "contacts.html";
+    alert(window.location.pathname);
 	}
 	catch (err) {
 		document.getElementById("loginResult").innerHTML = err.message;
@@ -58,8 +59,10 @@ function doRegister() {
 
 	document.getElementById("registerResult").innerHTML = "";
 
-	var jsonPayload = '{"firstName" : "' + firstName + '", "lastName" : "' + lastName + '", "login" : "' + login + '", password : "' + password + '"}';
+	var jsonPayload = '{"firstName" : "' + firstName + '", "lastName" : "' + lastName + '", "login" : "' + login + '", "password" : "' + password + '"}';
 	var url = urlBase + '/CreateAccount.' + extension;
+
+	alert(jsonPayload);
 
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, false);
