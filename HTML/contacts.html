@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+    crossorigin="anonymous">
+    <link href="css/stylesContacts.css" rel="stylesheet">
+</head>
+<script src="js/code.js"></script>
+<body>
+<section class="container-fluid">
+    <section class="row justify-content-center">
+      <section class="col-xsm-12 col-sm-8 col-md-8">
+        <div id="loggedInDiv">
+        <span id="userName"></span><br />
+        <button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+        </div>
+
+        <br />
+        <br />
+        <br />
+
+        <div id="accessUIDiv">
+
+          <form class = "form-container-first">
+            <h2> Search Contact </h2>
+            <div class = "form group">
+              <input type="text" id="searchText" placeholder="Contact To Search For"/>
+              <button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search </button><br />
+
+                <div id="searchResult">
+                <h2> Search Results </h2>
+                <div id="box">
+                  <p id="search">
+
+                    <a id = "0" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "23" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "56" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "3" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "2" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "234" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "3" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "87" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "9" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+                    <a id = "10" href = "edit.html" onclick="editContact.call(this, event);"> Jay D <br /> </a>
+
+                  </p>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <br />
+          <br />
+          <br />
+
+          <form class = "form-container-second">
+            <h2> Add Contact </h2>
+            <div class = "form group">
+              <input type="text" id="contactFirstName" placeholder="First Name">
+              <input type="text" id="contactLastName" placeholder="Last Name">
+              <input type="text" id="contactPhoneNumber" placeholder="Phone Number">
+              <input type="text" id="contactEmail" placeholder="Email">
+              <input type="text" id="contactStreet" placeholder="Street">
+              <input type="text" id="contactCity" placeholder="City">
+              <input type="text" id="contactState" placeholder="State">
+              <input type="text" id="contactZipcode" placeholder="Zipcode">
+              <input type="text" id="contactCountry" placeholder="Country">
+              <button type="button" id="addContactButton" class="buttons" onclick="addContact();"> Add </button><br />
+              <span id="contactAddResult"></span>
+            </div>
+          </form>
+
+          <br />
+          <br />
+          <br />
+
+        </div>
+
+      </section>
+    </section>
+</section>
+
+<script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+crossorigin="anonymous"></script>
+
+</body>
+</html>
