@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/1017162aa5.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Contact</title>
+</head>
+
+<body>
+  <div class="contact-div">
+    <div class="contact-card">
+      <a href="#" class="close">&times;</a>
+      <h2 class="contactName">First Last</h2>
+      <ol class="fa-ul">
+        <li class="contact-info">
+          <span class="fa-li"><i class="fas fa-mobile-alt fa-2x"></i></span>123-456-7890
+        </li>
+        <li class="contact-info">
+          <span class="fa-li"><i class="fas fa-envelope fa-2x"></i></span>example@email.com
+        </li>
+        <li class="contact-info">
+          <span class="fa-li"><i class="fas fa-map-marker-alt fa-2x"></i></span>
+          123 Street Ave
+          Orlando, FL 32801
+          USA
+        </li>
+      </ol>
+      <div class="edit-link">
+        <a href="#edit-page" class="edit">Edit</a>
+      </div>
+    </div>
+
+    <div id="edit-page">
+      <form action="" class="form">
+        <a href="#" class="close">&times;</a>
+        <h2>Edit Contact</h2>
+        <div class="edit-div">
+          <input type="text" name="firstName" id="firstName" value="First Name">
+        </div>
+        <div class="edit-div">
+          <input type="text" name="lastName" id="lastName" value="Last Name">
+        </div>
+        <div class="edit-div">
+          <input type="tel" name="phoneNumber" id="phoneNumber" value="Phone Number">
+        </div>
+        <div class="edit-div">
+          <input type="email" name="email" id="email" value="Email">
+        </div>
+        <div class="edit-div">
+          <input type="text" name="street" id="street" value="Street">
+        </div>
+        <div class="edit-div">
+          <input type="text" name="city" id="city" value="City">
+        </div>
+        <div class="edit-div">
+          <input type="text" name="state" id="state" value="State">
+        </div>
+        <div class="edit-div">
+          <input type="text" name="zipcode" id="zipcode" value="Zip">
+        </div>
+        <div class="edit-div">
+          <input type="text" name="country" id="country" value="Country">
+        </div>
+        <button class="submit-btn">Save <i class="far fa-save"></i></button>
+        <button class="delete-btn">Delete <i class="fas fa-trash-alt"></i></button>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
