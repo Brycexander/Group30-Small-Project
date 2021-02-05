@@ -1,7 +1,7 @@
 <?php
 	$inData = getRequestInfo();
 
-	$id = 12;
+	// $id = 12;
 	$firstName = $inData["firstName"];
 	$lastName = $inData["lastName"];
 	$password = $inData["password"];
@@ -43,16 +43,16 @@
 		sendResultInfoAsJson( $retValue );
 	}
 
-  // function returnWithInfo( $firstName, $lastName, $id )
-  // {
-  //   $retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
-  //   sendResultInfoAsJson( $retValue );
-  // }
-	//
-  // function sendResultInfoAsJson( $obj )
-  // {
-  //   header('Content-type: application/json');
-  //   echo $obj;
-  // }
+  function returnWithInfo( $firstName, $lastName)
+  {
+    $retValue = '{"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+    sendResultInfoAsJson( $retValue );
+  }
+
+  function sendResultInfoAsJson( $obj )
+  {
+    header('Content-type: application/json');
+    echo $obj;
+  }
 
 ?>

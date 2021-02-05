@@ -1,0 +1,51 @@
+FOR addContact
+{
+   "firstName" : "test2",
+   "lastName" : "finish2",
+   "phone" : 1234,
+   "email" : "something@gmail.com",
+   "street" : "landmark",
+   "city" : "Clearwater",
+   "state" : "Florida",
+   "zipCode" : 23407,
+   "country" : "USA",
+   "secondKey" : 1
+}
+
+FOR search
+{
+  "search" : "fin",
+  "UserID" : 1
+}
+
+FOR Login
+{
+  "login" : "BryceH",
+  "password" : "password"
+}
+
+FOR delete
+{
+  "secondKey" : 3
+}
+
+FOR modifyContact
+{
+   "id" : 2,
+   "firstName" : "test1",
+   "lastName" : "finish",
+   "phone" : 1234,
+   "email" : "something@gmail.com",
+   "street" : "landmark",
+   "zipCode" : 23407,
+   "country" : "USA",
+   "secondKey" : 1
+}
+
+FOR createAccount
+{
+  "firstName" : ???,
+  "lastName" : ???,
+  "password" : ???,
+  "login"    : ???
+}
