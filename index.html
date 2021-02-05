@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="js/md5.js"></script>
-    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/code.js"></script>
     <link rel="stylesheet" href="css/styles.css">
     <title>Numpal Contact Manager</title>
 </head>
@@ -22,7 +21,7 @@
                 <input type="password" name="loginPassword" id="loginPassword" required>
                 <label for="loginPassword">Password</label>
             </div>
-            <input type="submit" value="Login" class="submit-btn" onclick="doLogin();">
+            <button type="button" id="loginButton" class="submit-btn" onclick="doLogin();"> Login </button><br />
             <span id="loginResult"></span>
             <p>New member? <a href="#register" class="register">Sign up now!</a></p>
         </form>
@@ -47,7 +46,7 @@
                     <input type="password" name="registerPassword" id="registerPassword" required>
                     <label for="registerPassword">Password</label>
                 </div>
-                <input type="submit" value="Register" class="submit-btn" onclick="doRegister();">
+                <button type="button" id="registerButton" class="submit-btn" onclick="doRegister();"> Register </button><br />
                 <span id="registerResult"></span>
             </form>
         </div>
