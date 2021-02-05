@@ -10,14 +10,20 @@ body {
 }
 
 h2 {
-  color: #000000;
+  color: #31dd40;
+  margin: 5%;
+  margin-bottom: 10%;
 }
 
 a {
   color: #73aafd;
 }
 
-.login-div, .register-div {
+.fas {
+  color: rgb(52, 140, 240);
+}
+
+.login-div, .register-div, .contact-div {
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -25,7 +31,7 @@ a {
   align-items: center;
 }
 
-.form {
+.form, .contact-card {
   position: relative;
   width: 100%;
   max-width: 380px;
@@ -36,15 +42,19 @@ a {
   box-shadow: 0 15px 25px rgba(0,0,0,0.5);
 }
 
-.form h2 {
+.form, .contact-div h2 {
   text-align: center;
   letter-spacing: 1px;
   margin-bottom: 2rem;
-  color: rgb(55, 155, 35);
 }
 
 .form .input-div {
   position: relative;
+}
+
+.contact-info {
+  margin: 10%;
+  text-align: justify;
 }
 
 .form .input-div input {
@@ -53,6 +63,19 @@ a {
   font-size: 1rem;
   letter-spacing: 1px;
   margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background-color: transparent;
+  color: inherit;
+}
+
+.edit-div input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
   border: none;
   border-bottom: 1px solid #fff;
   outline: none;
@@ -87,13 +110,36 @@ a {
   padding: 10px 20px;
   font-size: 1rem;
   background: rgb(2, 103, 255);
+  color: #fff;
 }
+
+#edit-page .submit-btn {
+  margin: auto;
+}
+
+.delete-btn {
+  display: block;
+  margin-left: auto;
+  margin-top: 10%;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 5px;
+  background:rgb(255, 2, 2);
+  color: #fff;
+}
+
+.fa-trash-alt {
+  color: #fff;
+}
+
 
 .login-div .form p {
   margin-top: 10px;
 }
 
-#register {
+#register, #edit-page {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -108,9 +154,18 @@ a {
   transition: 0.6s;
 }
 
-#register:target {
+#register:target, #edit-page:target {
   height: 100%;
   opacity: 1;
+}
+
+.edit-link {
+  margin: auto;
+  text-align: center;
+}
+
+.edit-div {
+  margin: 10px;
 }
 
 .close {
