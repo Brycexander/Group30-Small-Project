@@ -5,25 +5,36 @@
 }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Concert One';
+  letter-spacing: 10px;
   color: #fff;
 }
 
+.login-page {
+  background-image: url("../images/MountainRange.jpg");
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  background-size: cover;
+}
+
 h2 {
-  color: #31dd40;
-  margin: 5%;
+  color: #20a520;
+  margin: 10%;
   margin-bottom: 10%;
+  font-size: 3.0em;
+  font-family: 'Montserrat', sans-serif;
 }
 
 a {
-  color: #73aafd;
+  color: #658eff;
 }
 
 .fas {
   color: rgb(52, 140, 240);
 }
 
-.login-div, .register-div, .contact-div {
+.login-div, .contact-div, .edit-div {
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -33,12 +44,16 @@ a {
 
 .form, .contact-card {
   position: relative;
-  width: 100%;
-  max-width: 380px;
+  /* height: 90vh; */
+  width: 100vw;
+  max-width: 600px;
+  max-height: 950px;
   padding: 40px 40px 40px;
-  background: rgba(0, 0, 0, 0.7);
+  /* background: rgba(102, 110, 102, 0.658); */
+  background: rgba(255, 255, 255, 0.658);
   border-radius: 10px;
-  color: #fff;
+  border-color: black;
+  color: rgb(46, 46, 46);
   box-shadow: 0 15px 25px rgba(0,0,0,0.5);
 }
 
@@ -52,32 +67,22 @@ a {
   position: relative;
 }
 
-.contact-info {
+.contact-item {
   margin: 10%;
   text-align: justify;
+}
+
+.contact-info {
+  letter-spacing: 0.2em;
 }
 
 .form .input-div input {
   width: 100%;
   padding: 10px 0;
-  font-size: 1rem;
   letter-spacing: 1px;
   margin-bottom: 30px;
   border: none;
-  border-bottom: 1px solid #fff;
-  outline: none;
-  background-color: transparent;
-  color: inherit;
-}
-
-.edit-div input {
-  width: 100%;
-  padding: 10px 0;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
-  border: none;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid rgb(151, 151, 151);
   outline: none;
   background-color: transparent;
   color: inherit;
@@ -88,16 +93,30 @@ a {
   top: 0;
   left: 0;
   padding: 10px 0;
-  font-size: 1rem;
+  font-size: large;
   pointer-events: none;
   transition: .3s ease-out;
+  color: rgb(34, 34, 34);
 }
 
 .login-div .input-div input:focus + label,
 .login-div .input-div input:valid + label {
   transform: translateY(-18px);
-  color: rgb(175, 175, 175);
+  color: rgb(110, 110, 110);
   font-size: .8rem;
+}
+
+.login-btn, .register-btn {
+  margin-left: 20px;
+  width: 200px;
+  height: 36px;
+  border: 1px solid #007bff;
+  background: #007bff;
+  text-align: center;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .submit-btn {
@@ -113,7 +132,7 @@ a {
   color: #fff;
 }
 
-#edit-page .submit-btn {
+.edit-div .submit-btn {
   margin: auto;
 }
 
@@ -139,9 +158,9 @@ a {
   margin-top: 10px;
 }
 
-#register, #edit-page {
+#register {
   position: absolute;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   top: 0;
@@ -149,23 +168,20 @@ a {
   right: 0;
   height: 0;
   z-index: 1;
-  background: #fff;
+  background: rgba(255, 255, 255, 0);
   opacity: 0;
   transition: 0.6s;
 }
 
-#register:target, #edit-page:target {
+#register:target {
   height: 100%;
   opacity: 1;
+  display: flex;
 }
 
 .edit-link {
   margin: auto;
   text-align: center;
-}
-
-.edit-div {
-  margin: 10px;
 }
 
 .close {
