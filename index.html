@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="js/code.js"></script>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Concert+One">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <title>Numpal Contact Manager</title>
 </head>
 
-<body>
+<body class="login-page">
     <div class="login-div">
-        <form action="" class="form">
+        <form action="" class="form" id="login-card">
             <h2>Login</h2>
             <div class="input-div">
                 <input type="text" name="loginName" id="loginName" required>
@@ -21,14 +25,14 @@
                 <input type="password" name="loginPassword" id="loginPassword" required>
                 <label for="loginPassword">Password</label>
             </div>
-            <button type="button" id="loginButton" class="submit-btn" onclick="doLogin();"> Login </button><br />
+            <button type="button" id="loginButton" class="login-btn" onclick="doLogin();"> Login </button><br />
             <span id="loginResult"></span>
-            <p>New member? <a href="#register" class="register">Sign up now!</a></p>
+            <p>New member? <a onclick="hideLoginPage();" href="#register" class="register">Sign up now!</a></p>
         </form>
 
         <div id="register">
             <form action="" class="form">
-                <a href="#" class="close">&times;</a>
+                <a href="#" onclick="hideLoginPage();" class="close">&times;</a>
                 <h2>Create New Account</h2>
                 <div class="input-div">
                     <input type="text" name="firstName" id="firstName" required>
@@ -46,7 +50,7 @@
                     <input type="password" name="registerPassword" id="registerPassword" required>
                     <label for="registerPassword">Password</label>
                 </div>
-                <button type="button" id="registerButton" class="submit-btn" onclick="doRegister();"> Register </button><br />
+                <button type="button" id="registerButton" class="register-btn" onclick="doRegister();"> Register </button><br />
                 <span id="registerResult"></span>
             </form>
         </div>
