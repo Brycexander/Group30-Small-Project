@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+    <link href="css/contactsPageStyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<script src="js/code.js"></script>
+<body>
+
+  <div class="animation-area">
+    <div class="box-area">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+    </div>
+
+  <div id = "fullContainer" class = "container">
+    <div class = "search-box">
+      <input type = "text" id = "searchBox" class = "search" placeholder = "Search Contact" />
+
+      <button type = "submit" class = "search-btn" onclick = "searchUserContact();">
+        <i class = "fa fa-search"></i>
+        Search
+      </button>
+
+      <div class="wrap">
+        <a href = "#add-div" class = "add-a"><button type = "submit" class = "add-btn"><i class="fa fa-plus"></i> Add </button></a>
+          <div id = "add-div" class="modal">
+            <div class="modal-content">
+              <a class="closebutton" href="#">&times;</a>
+              <form action="" class="form">
+                <h2>Add Contact</h2>
+                <div class="input-div row">
+                  <div class="col-sm-6">
+                    <input type="text" name="newFirstName" id="contactFirstName" value="" placeholder="First Name">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" name="newLastName" id="contactLastName" value="" placeholder="Last Name">
+                  </div>
+          
+                </div>
+                <div class="input-div">
+                  <input type="text" name="phoneNumber" id="contactPhoneNumber" value="" placeholder="Phone Number">
+                </div>
+                <div class="input-div">
+                  <input type="email" name="email" id="contactEmail" value="" placeholder="Email">
+                </div>
+                <div class="input-div">
+                  <input type="text" name="street" id="contactStreet" value="" placeholder="Street">
+                </div>
+          
+                <div class="input-div row">
+                  <div class="col-sm-4">
+                    <input type="text" name="city" id="contactCity" value="" placeholder="City">
+                  </div>
+                  <div class="col-sm-4">
+                    <input type="text" name="state" id="contactState" value="" placeholder="State">
+                  </div>
+                  <div class="col-sm-4">
+                    <input type="text" name="zipCode" id="contactZipcode" value="" placeholder="Zip">
+                  </div>
+                </div>
+          
+                <div class="input-div">
+                  <input type="text" name="country" id="contactCountry" value="" placeholder="Country">
+                </div>
+                <a class="submit-btn" onclick="addContact();">Add <i class="fa fa-save"></i></a>
+                <span id="contactAddResult"></span>
+              </form>
+            </div>
+            <a href="#" class="closeoverlay"></a>
+          </div>
+      </div>
+      
+      <button type = "submit" class = "logout-btn" onclick = "doLogout();">
+        <i class="fa fa-sign-out"></i>
+        Log Out
+      </button>
+
+    </div>
+
+    <div class = "sidebyside">
+      <div class = "search-results">
+        <h3> Results </h3>
+
+        <table id="table1" >        
+        </table>
+
+      </div>
+
+      <div class = "favorites">
+          <h3> Favorites </h3>
+          <table id="table2" >        
+          </table>
+      </div>
+    </div>
+
+  </div>
+  
+</body>
+</html>
