@@ -4,7 +4,703 @@ var extension = 'php';
 var userId = 0;
 var firstName = "";
 var lastName = "";
+var searchString = "";
 var nextUser = 0;
+
+function saveCookie()
+{
+	var minutes = 20;
+	var date = new Date();
+	date.setTime(date.getTime()+(minutes*60*1000));	
+	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ",nextUser=" + nextUser + ",searchString=" + searchString + ";expires=" + date.toGMTString();
+  // alert(document.cookie);
+}
+
+function readCookie()
+{
+	userId = -1;
+	var data = document.cookie;
+	var splits = data.split(",");
+	for(var i = 0; i < splits.length; i++) 
+	{
+		var thisOne = splits[i].trim();
+		var tokens = thisOne.split("=");
+		if( tokens[0] == "firstName" )
+		{
+			firstName = tokens[1];
+		}
+		else if( tokens[0] == "lastName" )
+		{
+			lastName = tokens[1];
+		}
+		else if( tokens[0] == "userId" )
+		{
+			userId = parseInt( tokens[1].trim() );
+		}
+    else if ( tokens[0] == "nextUser")
+    {
+      nextUser = parseInt( tokens[1].trim() );
+    }
+    else if (tokens[0] == "searchString")
+      searchString = tokens[1].trim();
+	}
+	
+	if( userId < 0 )
+	{
+		window.location.href = "index.html";
+	}
+	else
+	{
+		// document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+	}
+}
+
+/*
+function doLogin() {
+	userId = 0;
+	firstName = "";
+	lastName = "";
+
+	var login = document.getElementById("loginName").value;
+	var password = document.getElementById("loginPassword").value;
+	//	var hash = md5( password );
+
+	document.getElementById("loginResult").innerHTML = "";
+
+	//	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
+	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
+	var url = urlBase + '/Login.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.send(jsonPayload);
+
+		var jsonObject = JSON.parse(xhr.responseText);
+
+		userId = jsonObject.id;
+	  if (userId < 1)
+       return false;
+		firstName = jsonObject.firstName;
+		lastName = jsonObject.lastName;
+		saveCookie();
+    var next = "contacts.html";
+    
+		window.location.href = next;
+	}
+	catch (err) {
+		document.getElementById("loginResult").innerHTML = err.message;
+	}
+
+}
+
+function doRegister() {
+	var firstName = document.getElementById("firstName").value;
+	var lastName = document.getElementById("lastName").value;
+	var login = document.getElementById("registerName").value;
+	var password = document.getElementById("registerPassword").value;
+
+	document.getElementById("registerResult").innerHTML = "";
+
+	// var jsonPayload = '{"firstName" : "' + firstName + '", "lastName" : "' + lastName + '", "login" : "' + login + '", "password" : "' + password + '"}';
+  var jsonPayload = JSON.stringify({firstName : firstName, lastName : lastName, login : login, password : password});
+	var url = urlBase + '/CreateAccount.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.send(jsonPayload);
+
+		window.location.href = "index.html";
+	}
+	catch (err) {
+		document.getElementById("registerResult").innerHTML = err.message;
+	}
+
+}
+*/
+
+function hideLoginPage(){
+	var page = document.getElementById("login-card");
+	if (page.style.display == "none")
+		page.style.display = "block";
+	else
+		page.style.display = "none";
+}
+
+function doLogin() {
+	userId = 0;
+	firstName = "";
+	lastName = "";
+
+	var login = document.getElementById("loginName").value;
+	var password = document.getElementById("loginPassword").value;
+	var hash = md5(password);
+
+	document.getElementById("loginResult").innerHTML = "";
+	// var hash = md5(password, null, true);	
+   
+	//	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
+	var jsonPayload = JSON.stringify({login : login, password : hash});
+	// alert(jsonPayload);
+  var url = urlBase + '/Login.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.send(jsonPayload);
+
+		var jsonObject = JSON.parse(xhr.responseText);
+
+		userId = jsonObject.id;
+    // alert(userId);
+	  if (userId < 1){
+       document.getElementById("loginResult").innerHTML = "Invalid Username/Password";
+       return false;
+    }
+		firstName = jsonObject.firstName;
+		lastName = jsonObject.lastName;
+		saveCookie();
+    var next = "contactsPage.html";
+    
+		window.location.href = next;
+	}
+	catch (err) {
+		document.getElementById("loginResult").innerHTML = err.message;
+	}
+
+}
+
+function doRegister() {
+	var firstName = document.getElementById("firstName").value;
+	var lastName = document.getElementById("lastName").value;
+	var login = document.getElementById("registerName").value;
+	var orig = document.getElementById("registerPassword").value;
+  var password = md5(orig);
+  // alert(password);
+	// alert(orig + " " + password);
+	document.getElementById("registerResult").innerHTML = "";
+
+	// var jsonPayload = '{"firstName" : "' + firstName + '", "lastName" : "' + lastName + '", "login" : "' + login + '", "password" : "' + password + '"}';
+  var jsonPayload = JSON.stringify({firstName : firstName, lastName : lastName, login : login, password : password});
+	var url = urlBase + '/CreateAccount.' + extension;
+  
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+     xhr.onreadystatechange = function()
+		{
+			if (this.readyState == 4 && this.status == 200)
+			{
+        var store = xhr.responseText;
+				// alert(store);
+				var jsonObject = JSON.parse(store); 
+			  document.getElementById("registerResult").innerHTML = jsonObject.error;
+      }
+		};
+		xhr.send(jsonPayload);
+	}
+	catch (err) {
+		document.getElementById("registerResult").innerHTML = err.message;
+	}
+
+}
+
+function doLogout()
+{
+	userId = 0;
+	firstName = "";
+	lastName = "";
+	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+	window.location.href = "index.html";
+}
+
+function readFakeCookie(){
+	userId = 4;
+	firstName = "Jay";
+	lastName = "D";
+	nextUser = 7;
+}
+
+function loadAdd(){
+  document.getElementById("contactFirstName").value = "";
+	document.getElementById("contactLastName").value = "";
+	document.getElementById("contactPhoneNumber").value = "";
+	document.getElementById("contactEmail").value = "";
+	document.getElementById("contactStreet").value = "";
+	document.getElementById("contactCity").value = "";
+	document.getElementById("contactState").value = "";
+	document.getElementById("contactZipcode").value = "";
+	document.getElementById("contactCountry").value = "";
+  document.getElementById("contactAddResult").innerHTML = "";
+}
+
+function addContact()
+{
+  readCookie(); 
+	var firstName = document.getElementById("contactFirstName").value;
+	var lastName = document.getElementById("contactLastName").value;
+	var phone = parseInt(document.getElementById("contactPhoneNumber").value);
+	var email = document.getElementById("contactEmail").value;
+	var street = document.getElementById("contactStreet").value;
+	var city = document.getElementById("contactCity").value;
+	var state = document.getElementById("contactState").value;
+	var zipcode = parseInt(document.getElementById("contactZipcode").value);
+	var country = document.getElementById("contactCountry").value;
+	document.getElementById("contactAddResult").innerHTML = "";
+
+	// var jsonPayload = '{"FirstName" : ' + firstName + ', "LastName" : ' + lastName + ', "Phone" : ' + phone +
+		//	', "Email" : ' + email + ', "Street" : ' + street + ', "City" : ' + city +
+			//', "State" : ' + state + ', "Zipcode" : ' + zipcode + ', "Country" : ' + country + '}';
+  
+  var jsonPayLoad = JSON.stringify({firstName : firstName, lastName : lastName, phone : phone, email : email, street : street, city : city, state : state, zipCode : zipcode, country : country, secondKey : userId});
+	// alert(jsonPayLoad);
+
+	var url = urlBase + '/AddContact.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function()
+		{
+			if (this.readyState == 4 && this.status == 200)
+			{
+        // alert("reached");
+				document.getElementById("contactAddResult").innerHTML = "</br></br>Contact Added";
+        var srch = document.getElementById("searchBox").value;
+        document.getElementById("searchBox").value = "";
+        searchUserContact();
+        document.getElementById("searchBox").value = srch;
+        searchUserContact();
+			}
+		};
+		xhr.send(jsonPayLoad);
+	}
+	catch(err)
+	{
+		document.getElementById("contactAddResult").innerHTML = err.message;
+	}
+
+}
+
+var allContacts = [];
+var favContacts = [];
+
+class Contact{
+	constructor(id, name, location, phone, email, star) {
+		this.id = id;
+		this.starid = "star-" + id;
+		this.name = name;
+		this.location = location;
+		this.phone = phone;
+		this.email = email;
+		this.star = star;
+	}
+    
+	starColor(){
+    	var doc = document.getElementById(this.starid);
+    	if (doc == null) return;
+		if (this.star == 0){
+			document.getElementById(this.starid).style.color = "#fff";
+		}
+		else{
+			document.getElementById(this.starid).style.color = "#ffff00";
+		}
+	}
+
+	equal(other){
+		return this.id == other;
+	}
+	
+	sendFlip(val){
+		readFakeCookie();
+ 		var jsonPayload = JSON.stringify({id: this.id, favorite: val});
+  		var url = urlBase + '/EditFavorite.' + extension;
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+		try {
+			xhr.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					;
+				}
+			};
+			xhr.send(jsonPayload);
+		}
+		catch (err) {
+	  		// alert(err.message);
+		} 
+	}
+
+	flip(){
+		if (this.star == 0){
+			this.sendFlip(1);
+			this.star = 1;
+			this.starColor();
+			var contact = new Contact(this.id.slice(), this.name, this.location, this.phone, this.email, 1);
+			favContacts.push(contact);
+			displayFavorites(favContacts);
+		}
+		else{
+			this.sendFlip(0);
+			this.star = 0;
+			this.starColor();
+			for (var i = 0; i < favContacts.length; i++){
+				if (favContacts[i].equal(this.id)){
+					favContacts[i].id = "-1";
+					break;
+				}
+			}
+			displayFavorites(favContacts);
+		}
+	}	
+}
+
+
+function favorite(evt){
+  // alert(evt);
+  // alert(this.id);
+  var id = this.id;
+  var starID = id.substring(5);
+  // alert(starID);
+  for (var i = 0; i < allContacts.length; i++){
+	  if (allContacts[i].equal(starID)){
+		  allContacts[i].flip();
+		  break;
+	  }
+  }  
+}
+
+function displayFavorites(){
+  // alert(favContacts);
+	favContacts.sort(function(a, b) { 
+		return (a.name.localeCompare(b.name));
+	});
+	favList = "";
+	for (var i = 0; i < favContacts.length; i++){
+		c = favContacts[i];
+    if (c.id == -1) continue;
+		var info = "<tr> <td> <a id = \"" + c.id + "\" class = \"form-btn\" onclick=\"displayCard.call(this, event);\" href = \"#contact-card\">" + c.name + "</a> </td>";
+		var fav = "<td> <a id = \"star1" + c.id + "\" class = \"star-btn\" onclick = \"favorite.call(this, event);\"> <i class=\"fa fa-star\"></i> </a> </td> </tr>";
+		var str = info + fav;
+		favList += str;
+	}
+	document.getElementById("table2").innerHTML = ("" + favList);
+  for (var i = 0; i < favContacts.length; i++)
+	{
+	  var curr = favContacts[i];
+	  var idUser = curr.id;
+	  if (idUser == -1) continue;
+    document.getElementById("star1" + idUser).style.color = "#ffff00";
+	}
+}
+
+
+function duplicate(array, val){
+  for (var i = 0; i < array.length; i++)
+    if (array[i].equal(val.id))
+      return true;
+  return false;
+}
+
+function searchOnLoad(){
+ searchUserContact();
+}
+
+function searchUserContact()
+{
+  readCookie();
+	var srch = document.getElementById("searchBox").value;
+    // alert(srch);
+	// document.getElementById("search").innerHTML = "";
+  if (srch == ""){
+    favContacts = [];
+    allContacts = [];
+  }
+	var contactList = " <tr> <th> Name </th> <th> Phone </th> <th> Email</th><th></th></tr>";
+    var favList = "";
+	var jsonPayload = JSON.stringify({"search" : srch, "UserID" : userId});
+	var url = urlBase + '/SearchContact.' + extension;
+    // alert(jsonPayload);
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		// <a id = "17" onclick="displayCard.call(this, event);" href = "contact-card.html"> Jay D <br /> </a>
+		xhr.onreadystatechange = function()
+		{
+			if (this.readyState == 4 && this.status == 200)
+			{
+				var store = xhr.responseText;
+				// alert(store);
+				var jsonObject = JSON.parse(store);
+        // alert(jsonObject.results);
+				if (jsonObject.results == undefined){
+         document.getElementById("table1").innerHTML = "";
+         return;
+        }
+        jsonObject.results.sort(function(a, b) { 
+					return (a.firstName.localeCompare(b.firstName))  ||  (a.lastName.localeCompare(b.lastName));
+				});
+				// alert(jsonObject.results[0]);
+				for (var i = 0; i < jsonObject.results.length; i++)
+				{
+					var curr = jsonObject.results[i];
+					var on = parseInt(jsonObject.results[i].favorite);
+					var name = jsonObject.results[i].firstName + " " + jsonObject.results[i].lastName;
+					var idUser = jsonObject.results[i].id;
+					var phone = curr.Phone;
+					var email = curr.Email;
+					var location = curr.street + " " + curr.city + " " + curr.state + " " + curr.zipCode + " " + curr.country;
+					// alert(name + "\n" + idUser + "\n" + phone + "\n" + email + "\n" + location);
+					// alert(first);
+					// alert(last);
+				  // alert(idUser);
+					var contact = new Contact(idUser, name, location, phone, email, on);
+    	    var favContact = new Contact(idUser.slice(), name, location, phone, email, on);
+          			if (!duplicate(allContacts, contact))
+					  allContacts.push(contact);
+					var info = "<tr> <td> <a id = \"" + idUser + "\" class = \"form-btn\" onclick=\"displayCard.call(this, event);\" href = \"#contact-card\">" + name + "</a> </td>";
+          info +=  "<td> <a id = \"" + idUser + "\" class = \"form-btn\" onclick=\"displayCard.call(this, event);\" href = \"#contact-card\">" + phone + " " + "</a> </td>";
+          info += " <td> <a id = \"" + idUser + "\" class = \"form-btn\" onclick=\"displayCard.call(this, event);\" href = \"#contact-card\">" + email + "</a> </td>";
+					var fav = "<td> <a id = \"star-" + idUser + "\" class = \"star-btn\" onclick = \"favorite.call(this, event);\"> <i class=\"fa fa-star\"></i> </a> </td> </tr>";
+					
+					var str = info + fav;
+					// alert(str);
+					contactList += str;
+					if (on == 1){
+						favList += str;
+            if (!duplicate(favContacts, contact)) 
+						  favContacts.push(favContact);
+					}
+				}
+				document.getElementById("table1").innerHTML = ("" + contactList);
+				// document.getElementById("table2").innerHTML = ("" + favList);
+				for (var i = 0; i < jsonObject.results.length; i++)
+				{
+					var curr = jsonObject.results[i];
+					var on = parseInt(jsonObject.results[i].favorite);
+					var idUser = jsonObject.results[i].id;
+					// alert(on);
+					if (on == 1){
+						document.getElementById("star-" + idUser).style.color = "#ffff00";
+					}
+				}
+        // alert("reached");
+				//alert(contactList);
+			}
+      displayFavorites();
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("searchResult").innerHTML = err.message;
+	}	
+}
+
+function searchContact()
+{
+  readCookie();
+	var srch = document.getElementById("searchText").value;
+  // alert(srch);
+	document.getElementById("search").innerHTML = "";
+
+	var contactList = "";
+
+	var jsonPayload = JSON.stringify({"search" : srch, "UserID" : userId});
+	var url = urlBase + '/SearchContact.' + extension;
+  // alert(jsonPayload);
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		// <a id = "17" onclick="displayCard.call(this, event);" href = "contact-card.html"> Jay D <br /> </a>
+		xhr.onreadystatechange = function()
+		{
+			if (this.readyState == 4 && this.status == 200)
+			{
+				var store = xhr.responseText;
+        // alert(store);
+				var jsonObject = JSON.parse(store);
+	      jsonObject.results.sort(function(a, b) { 
+          return (a.firstName.localeCompare(b.firstName))  ||  (a.lastName.localeCompare(b.lastName));
+        });
+        // alert(jsonObject.results);
+				for (var i = 0; i < jsonObject.results.length; i++)
+				{
+					var name = jsonObject.results[i].firstName + " " + jsonObject.results[i].lastName;
+					var idUser = jsonObject.results[i].id;
+          // alert(first);
+          // alert(last);
+          // alert(idUser);
+         	var str = "<a id = \"" + idUser + "\" onclick=\"displayCard.call(this, event);\" href = \"#contact-card\"> " + name + " <br /> </a>";
+          // alert(str);
+					contactList += str;
+				}
+        //document.getElementsByTagName("p")[0].innerHTML = colorList;
+        document.getElementById("search").innerHTML = ("" + contactList);
+        document.getElementById("searchResult").style.display = "block";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("colorSearchResult").innerHTML = err.message;
+	}	
+}
+
+function displayCard(evt)
+{
+
+  readCookie();
+  // alert(evt.id);
+  // alert(this.id);
+  nextUser = (this.id); 
+  saveCookie();
+  testDisplayInfo();    
+}
+
+function testDisplayInfo() {
+	readCookie();
+
+	var jsonPayload = JSON.stringify({ id: nextUser});
+	var url = urlBase + '/GetContact.' + extension;
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				var contact = JSON.parse(this.responseText);
+				document.getElementById("nameP").innerHTML = "<h1>" + contact.firstName + " " + contact.lastName + "</h1>";
+				document.getElementById("phoneP").innerHTML = "<i class=\"fa fa-phone info\"></i>" + contact.phone;
+				document.getElementById("emailP").innerHTML = "<i class=\"fa fa-envelope info\"></i>" + contact.email;
+        var location = contact.street + ", " + contact.city + ", " + contact.state + ", " + contact.zipCode + ", " + contact.country;
+				document.getElementById("LocationP").innerHTML = "<i class=\"fa fa-home info\"></i>" + location;
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch (err) {
+		document.getElementById("displayResult").innerHTML = err.message;
+	}
+}
+
+
+function editContact() {
+	readCookie();
+	var newFirstName = document.getElementById("editFirstName").value;
+	var newLastName = document.getElementById("editLastName").value;
+	var phone = parseInt(document.getElementById("editPhoneNumber").value);
+	var email = document.getElementById("editcontactEmail").value;
+	var street = document.getElementById("editcontactStreet").value;
+	var city = document.getElementById("editcontactCity").value;
+	var state = document.getElementById("editcontactState").value;
+	var zipCode = parseInt(document.getElementById("editcontactZipcode").value);
+	var country = document.getElementById("editcontactCountry").value;
+	var secondKey = userId;
+
+
+
+	var jsonPayload = JSON.stringify({ id: nextUser, firstName: newFirstName, lastName: newLastName, phone: phone, email: email, street: street, city: city, state: state, zipCode: zipCode, country: country, secondKey: secondKey });
+	// alert(jsonPayload);
+
+	var url = urlBase + '/ModifyContact.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.send(jsonPayload);
+    xhr.onload = function(){      
+      var srch = document.getElementById("searchBox").value;
+      document.getElementById("searchBox").value = "";
+      searchUserContact();
+      document.getElementById("searchBox").value = srch;
+      searchUserContact();
+      document.getElementById("nameP").innerHTML = "<h1>" + newFirstName + " " + newLastName + "</h1>";
+		  document.getElementById("phoneP").innerHTML = "<i class=\"fa fa-phone info\"></i>" + phone;
+		  document.getElementById("emailP").innerHTML = "<i class=\"fa fa-envelope info\"></i>" + email;
+      var location = street + " " + city + " " + state + " " + zipCode + " " + country;
+		  document.getElementById("LocationP").innerHTML = "<i class=\"fa fa-home info\"></i>" + location;
+    };
+	}
+	catch (err) {
+   // alert(err.message);
+		document.getElementById("editResult").innerHTML = err.message;
+	}
+}
+
+function loadEdit() {
+	readCookie();
+
+	var jsonPayload = JSON.stringify({ id: nextUser });
+	var url = urlBase + '/GetContact.' + extension;
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				var contact = JSON.parse(this.responseText);
+        // alert(this.responseText);
+				document.getElementById("editFirstName").value = contact.firstName;
+				document.getElementById("editLastName").value = contact.lastName;
+				document.getElementById("editPhoneNumber").value = contact.phone;
+				document.getElementById("editcontactEmail").value = contact.email;
+				document.getElementById("editcontactStreet").value = contact.street;
+				document.getElementById("editcontactCity").value = contact.city;
+				document.getElementById("editcontactState").value = contact.state;
+				document.getElementById("editcontactZipcode").value = contact.zipCode;
+				document.getElementById("editcontactCountry").value = contact.country;
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch (err) {
+		document.getElementById("displayResult").innerHTML = err.message;
+	}
+}
+
+function deleteContact()
+{
+  readCookie();
+  var jsonPayload = JSON.stringify({"secondKey": nextUser});
+  var url = urlBase + '/DeleteContact.' + extension;
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				;
+			}
+		};
+		xhr.send(jsonPayload);
+    xhr.onload = function(){
+      var srch = document.getElementById("searchBox").value;
+      document.getElementById("searchBox").value = "";
+      searchUserContact();
+      document.getElementById("searchBox").value = srch;
+      searchUserContact();
+      window.location.href = "#container";
+    };
+	}
+	catch (err) {
+	  // alert(err.message);
+     // document.getElementById("displayResult").innerHTML = err.message;
+	} 
+}
 
 ;(function($) {
 	'use strict'
@@ -387,368 +1083,6 @@ var nextUser = 0;
   })(this)
 
 
-function saveCookie()
-{
-	var minutes = 20;
-	var date = new Date();
-	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ",nextUser=" + nextUser + ";expires=" + date.toGMTString();
-    // alert(document.cookie);
-}
-
-
-function readCookie()
-{
-	userId = -1;
-	var data = document.cookie;
-	var splits = data.split(",");
-	for(var i = 0; i < splits.length; i++) 
-	{
-		var thisOne = splits[i].trim();
-		var tokens = thisOne.split("=");
-		if( tokens[0] == "firstName" )
-		{
-			firstName = tokens[1];
-		}
-		else if( tokens[0] == "lastName" )
-		{
-			lastName = tokens[1];
-		}
-		else if( tokens[0] == "userId" )
-		{
-			userId = parseInt( tokens[1].trim() );
-		}
-    else if ( tokens[0] == "nextUser")
-    {
-      nextUser = parseInt( tokens[1].trim() );
-    }
-	}
-	
-	if( userId < 0 )
-	{
-		window.location.href = "index.html";
-	}
-	else
-	{
-		// document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
-	}
-}
-
-function hideLoginPage(){
-	var page = document.getElementById("login-card");
-	if (page.style.display == "none")
-		page.style.display = "block";
-	else
-		page.style.display = "none";
-}
-
-function doLogin() {
-	userId = 0;
-	firstName = "";
-	lastName = "";
-
-	var login = document.getElementById("loginName").value;
-	var password = document.getElementById("loginPassword").value;
-	//	var hash = md5( password );
-
-	document.getElementById("loginResult").innerHTML = "";
-	var hash = md5(password, null, true);	
-	//	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
-	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
-	var url = urlBase + '/Login.' + extension;
-
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, false);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try {
-		xhr.send(jsonPayload);
-
-		var jsonObject = JSON.parse(xhr.responseText);
-
-		userId = jsonObject.id;
-	  if (userId < 1)
-       return false;
-		firstName = jsonObject.firstName;
-		lastName = jsonObject.lastName;
-		saveCookie();
-    var next = "contacts.html";
-    
-		window.location.href = next;
-	}
-	catch (err) {
-		document.getElementById("loginResult").innerHTML = err.message;
-	}
-
-}
-
-function doRegister() {
-	var firstName = document.getElementById("firstName").value;
-	var lastName = document.getElementById("lastName").value;
-	var login = document.getElementById("registerName").value;
-	var orig = document.getElementById("registerPassword").value;
-    var password = md5(orig, null, true)
-	// alert(orig + " " + password);
-	document.getElementById("registerResult").innerHTML = "";
-
-	// var jsonPayload = '{"firstName" : "' + firstName + '", "lastName" : "' + lastName + '", "login" : "' + login + '", "password" : "' + password + '"}';
-  var jsonPayload = JSON.stringify({firstName : firstName, lastName : lastName, login : login, password : password});
-	var url = urlBase + '/CreateAccount.' + extension;
-
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, false);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try {
-		xhr.send(jsonPayload);
-
-		window.location.href = "index.html";
-	}
-	catch (err) {
-		document.getElementById("registerResult").innerHTML = err.message;
-	}
-
-}
-
-function doLogout()
-{
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
-}
-
-function addContact()
-{
-  readCookie(); 
-	var firstName = document.getElementById("contactFirstName").value;
-	var lastName = document.getElementById("contactLastName").value;
-	var phone = parseInt(document.getElementById("contactPhoneNumber").value);
-	var email = document.getElementById("contactEmail").value;
-	var street = document.getElementById("contactStreet").value;
-	var city = document.getElementById("contactCity").value;
-	var state = document.getElementById("contactState").value;
-	var zipcode = parseInt(document.getElementById("contactZipcode").value);
-	var country = document.getElementById("contactCountry").value;
-	document.getElementById("contactAddResult").innerHTML = "";
-
-	// var jsonPayload = '{"FirstName" : ' + firstName + ', "LastName" : ' + lastName + ', "Phone" : ' + phone +
-		//	', "Email" : ' + email + ', "Street" : ' + street + ', "City" : ' + city +
-			//', "State" : ' + state + ', "Zipcode" : ' + zipcode + ', "Country" : ' + country + '}';
-  
-  var jsonPayLoad = JSON.stringify({firstName : firstName, lastName : lastName, phone : phone, email : email, street : street, city : city, state : state, zipCode : zipcode, country : country, secondKey : userId});
-	// alert(jsonPayLoad);
-
-	var url = urlBase + '/AddContact.' + extension;
-
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function()
-		{
-			if (this.readyState == 4 && this.status == 200)
-			{
-        // alert("reached");
-				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
-			}
-		};
-		xhr.send(jsonPayLoad);
-	}
-	catch(err)
-	{
-		document.getElementById("contactAddResult").innerHTML = err.message;
-	}
-
-}
-
-function searchContact()
-{
-  readCookie();
-	var srch = document.getElementById("searchText").value;
-   // alert(srch);
-	document.getElementById("search").innerHTML = "";
-
-	var contactList = "";
-
-	var jsonPayload = JSON.stringify({"search" : srch, "UserID" : userId});
-	var url = urlBase + '/SearchContact.' + extension;
-  // alert(jsonPayload);
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		// <a id = "17" onclick="displayCard.call(this, event);" href = "contact-card.html"> Jay D <br /> </a>
-		xhr.onreadystatechange = function()
-		{
-			if (this.readyState == 4 && this.status == 200)
-			{
-				var store = xhr.responseText;
-        // alert(store);
-				var jsonObject = JSON.parse(store);
-	      jsonObject.results.sort(function(a, b) { 
-          return (a.firstName.localeCompare(b.firstName))  ||  (a.lastName.localeCompare(b.lastName));
-        });
-        // alert(jsonObject.results);
-				for (var i = 0; i < jsonObject.results.length; i++)
-				{
-					var name = jsonObject.results[i].firstName + " " + jsonObject.results[i].lastName;
-					var idUser = jsonObject.results[i].id;
-          // alert(first);
-          // alert(last);
-          // alert(idUser);
-         	var str = "<a id = \"" + idUser + "\" onclick=\"displayCard.call(this, event);\" href = \"contact-card.html\"> " + name + " <br /> </a>";
-          // alert(str);
-					contactList += str;
-				}
-        //document.getElementsByTagName("p")[0].innerHTML = colorList;
-        document.getElementById("search").innerHTML = ("" + contactList);
-        document.getElementById("searchResult").style.display = "block";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
-	}	
-}
-
-function displayCard(evt)
-{
-
-  readCookie();
-  nextUser = (evt.target.id); 
-  saveCookie();
-  // alert(document.cookie);
-  window.location.href = "contact-card.html";
-  // alert(window.location.href);
-    
-}
-
-function testDisplayInfo() {
-	readCookie();
-
-	document.getElementById("displayResult").innerHTML = "";
-
-	var jsonPayload = JSON.stringify({ id: nextUser});
-	var url = urlBase + '/GetContact.' + extension;
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try {
-		xhr.onreadystatechange = function () {
-			if (this.readyState == 4 && this.status == 200) {
-				var contact = JSON.parse(this.responseText);
-				document.getElementById("contactName").innerHTML = contact.firstName + " " + contact.lastName;
-				document.getElementById("phoneNumber").innerHTML = contact.phone;
-				document.getElementById("email").innerHTML = contact.email;
-				document.getElementById("address").innerHTML = contact.street + "<br>" +
-				contact.city + ", " + contact.state + " " + contact.zipCode + "<br>" +
-				contact.country;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch (err) {
-		document.getElementById("displayResult").innerHTML = err.message;
-	}
-}
-
-
-function editContact() {
-	readCookie();
-	var newFirstName = document.getElementById("newFirstName").value;
-	var newLastName = document.getElementById("newLastName").value;
-	var phone = parseInt(document.getElementById("phoneNumber").value);
-	var email = document.getElementById("email").value;
-	var street = document.getElementById("street").value;
-	var city = document.getElementById("city").value;
-	var state = document.getElementById("state").value;
-	var zipCode = parseInt(document.getElementById("zipCode").value);
-	var country = document.getElementById("country").value;
-	var secondKey = userId;
-	document.getElementById("editResult").innerHTML = "";
-
-
-
-	var jsonPayload = JSON.stringify({ id: nextUser, firstName: newFirstName, lastName: newLastName, phone: phone, email: email, street: street, city: city, state: state, zipCode: zipCode, country: country, secondKey: secondKey });
-	// alert(jsonPayload);
-
-	var url = urlBase + '/ModifyContact.' + extension;
-
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try {
-		xhr.send(jsonPayload);
-    xhr.onload = function(){
-      window.location.href = "contact-card.html";
-    };
-	}
-	catch (err) {
-   // alert(err.message);
-		document.getElementById("editResult").innerHTML = err.message;
-	}
-}
-
-function loadEdit() {
-	readCookie();
-
-	var jsonPayload = JSON.stringify({ id: nextUser });
-	var url = urlBase + '/GetContact.' + extension;
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try {
-		xhr.onreadystatechange = function () {
-			if (this.readyState == 4 && this.status == 200) {
-				var contact = JSON.parse(this.responseText);
-				document.getElementById("newFirstName").value = contact.firstName;
-				document.getElementById("newLastName").value = contact.lastName;
-				document.getElementById("phoneNumber").value = contact.phone;
-				document.getElementById("email").value = contact.email;
-				document.getElementById("street").value = contact.street;
-				document.getElementById("city").value = contact.city;
-				document.getElementById("state").value = contact.state;
-				document.getElementById("zipCode").value = contact.zipCode;
-				document.getElementById("country").value = contact.country;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch (err) {
-		document.getElementById("displayResult").innerHTML = err.message;
-	}
-}
-
-function deleteContact()
-{
-  readCookie();
-  var jsonPayload = JSON.stringify({"secondKey": nextUser});
-  var url = urlBase + '/DeleteContact.' + extension;
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try {
-		xhr.onreadystatechange = function () {
-			if (this.readyState == 4 && this.status == 200) {
-				;
-			}
-		};
-		xhr.send(jsonPayload);
-    xhr.onload = function(){
-      window.location.href = "contacts.html";
-    };
-	}
-	catch (err) {
-	  // alert(err.message);
-     // document.getElementById("displayResult").innerHTML = err.message;
-	} 
-}
-
-
 // format: <a id = "17" onclick="displayCard.call(this, event);" href = "contact-card.html"> Jay D <br /> </a>
 
 /*
@@ -789,6 +1123,3 @@ function searchContact()
 	}
 }
 */
-
-// MD5 CODE FOR HASHING
-
