@@ -12,7 +12,7 @@
 	}
 	else
 	{
-		$sql = "SELECT ID, FirstName, LastName, Phone, Email, Street, ZipCode, Country, UserID from Contacts where LastName like '%" . $inData["search"] . "%' and UserID=" . $inData["UserID"];
+		$sql = "SELECT ID, FirstName, LastName, Phone, Email, Street, City, State, ZipCode, Country, UserID, Favorites from Contacts where UserID='" . $inData["UserID"] . "' and (FullName like '%" . $inData["search"] . "%' or Phone like '%" . $inData["search"] . "%')";
 		$result = $conn->query($sql);
 		if ($result->num_rows > 0)
 		{
@@ -23,27 +23,34 @@
 					$searchResults .= ",";
 				}
 				$searchCount++;
-				$searchResults .= "[";
+				$searchResults .= "{\"id\": ";
+        $searchResults .= '"' . $row["ID"] . '"';
+        $searchResults .= ", \"firstName\": ";
 				$searchResults .= '"' . $row["FirstName"] . '"';
-				$searchResults .= ",";
+				$searchResults .= ", \"lastName\": ";
 				$searchResults .= '"' . $row["LastName"] . '"';
-				$searchResults .= ",";
-				$searchResults .= '"' . $row["LastName"] . '"';
-				$searchResults .= ",";
+				$searchResults .= ", \"Phone\": ";
 				$searchResults .= '"' . $row["Phone"] . '"';
-				$searchResults .= ",";
+				$searchResults .= ", \"Email\": ";
 				$searchResults .= '"' . $row["Email"] . '"';
-				$searchResults .= ",";
+				$searchResults .= ", \"street\": ";
 				$searchResults .= '"' . $row["Street"] . '"';
-				$searchResults .= ",";
+				$searchResults .= ", \"city\": ";
+				$searchResults .= '"' . $row["City"] . '"';
+				$searchResults .= ", \"state\": ";
+				$searchResults .= '"' . $row["State"] . '"';
+				$searchResults .= ", \"zipCode\": ";
 				$searchResults .= '"' . $row["ZipCode"] . '"';
-				$searchResults .= ",";
+				$searchResults .= ", \"country\": ";
 				$searchResults .= '"' . $row["Country"] . '"';
-				$searchResults .= ",";
+				$searchResults .= ", \"UserID\": ";
 				$searchResults .= '"' . $row["UserID"] . '"';
-				$searchResults .= ",";
-				$searchResults .= "]";
+				$searchResults .= ", \"favorite\": ";
+				$searchResults .= '"' . $row["Favorites"] . '"';
+				$searchResults .= "}";
 			}
+      
+     	returnWithInfo( $searchResults );
 		}
 		else
 		{
@@ -51,8 +58,6 @@
 		}
 		$conn->close();
 	}
-
-	returnWithInfo( $searchResults );
 
 	function getRequestInfo()
 	{

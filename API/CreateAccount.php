@@ -28,6 +28,7 @@
 			{
 				returnWithError( $conn->error );
 			}
+ 		  returnWithError( "Account created successfully" );
 		}
 		// if( $result = $conn->query($sql) != TRUE )
 		// {
@@ -39,7 +40,6 @@
     //   // $id = $row["ID"];
     //   // returnWithInfo( $firstName, $lastName, $id);
     // }
-
 		$conn->close();
 	}
 

@@ -1,17 +1,16 @@
 <?php
 	$inData = getRequestInfo();
 
+	// $id = $inData["ID"];
+	// $firstName = $inData["firstName"];
+	// $lastName = $inData["lastName"];
+	// $phone = $inData["phone"];
+	// $email = $inData["email"];
+	// $street = $inData["street"];
+	// $zipCode = $inData["zipCode"];
+	// $country = $inData["country"];
 	$id = $inData["id"];
-	$firstName = $inData["firstName"];
-	$lastName = $inData["lastName"];
-	$phone = $inData["phone"];
-	$email = $inData["email"];
-	$street = $inData["street"];
-	$city = $inData["city"];
-	$state = $inData["state"];
-	$zipCode = $inData["zipCode"];
-	$country = $inData["country"];
-	$secondKey = $inData["secondKey"];
+  $favorite = $inData["favorite"];
 
 
   $conn = new mysqli("localhost", "MRod", "Group30Rocks", "Group30");
@@ -21,15 +20,7 @@
 	}
 	else
 	{
-		//$sql = "UPDATE ID,firstName,lastName, phone,email,street,city,state,zipCode, country, secondKey FROM Contacts where ID ='" . $inData["secondKey"] . "'";
-
-
-		$sql = "UPDATE Contacts
-						SET FirstName = '$firstName', LastName = '$lastName', FullName = '$firstName $lastName', Phone = '$phone', Email = '$email', Street = '$street', City = '$city', State = '$state', ZipCode = '$zipCode', Country = '$country'
-						WHERE ID= $id";
-
-
-		// $sql = "DELETE from Contacts where ID = '" . $inData["secondKey"] . "'";
+    $sql = "UPDATE Contacts SET Favorites = '$favorite' WHERE ID= '$id'";
 
 		if( $result = $conn->query($sql) != TRUE )
 		{

@@ -12,6 +12,7 @@
 	$zipCode = $inData["zipCode"];
 	$country = $inData["country"];
 	$secondKey = $inData["secondKey"];
+	$favorite = 0;
 
 
   $conn = new mysqli("localhost", "MRod", "Group30Rocks", "Group30");
@@ -21,8 +22,9 @@
 	}
 	else
 	{
-		$sql = "INSERT INTO Contacts (FirstName, LastName, Phone, Email, Street, City, State, ZipCode, Country, UserID) VALUES ('" . $firstName . "','" . $lastName . "', '" . $phone . "','" . $email . "',
-			 																																								'" . $street . "', '" . $city . "', '" . $state . "', '" . $zipCode . "', '" . $country . "', '" . $secondKey . "')";
+		$sql = "INSERT INTO Contacts (FirstName, LastName, FullName, Phone, Email, Street, City, State, ZipCode, Country, UserID, Favorites) VALUES ('" . $firstName . "', '" . $lastName . "', '" . $firstName . " " . $lastName . "', '" . $phone . "','" . $email . "',
+			 																																								'" . $street . "', '" . $city . "', '" . $state . "', '" . $zipCode . "', '" . $country . "', '" . $secondKey . "', '" . $favorite . "')";
+
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );
