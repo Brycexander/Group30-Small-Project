@@ -30,9 +30,9 @@
         <i class = "fa fa-search"></i>
         Search
       </button>
-
+      
       <div class="wrap">
-        <a href = "#add-div" class = "add-a"><button type = "submit" class = "add-btn"><i class="fa fa-plus"></i> Add </button></a>
+        <a href = "#add-div" class = "add-a" id = "addButton" onclick = "loadAdd();"><button type = "button" class = "add-btn"><i class="fa fa-plus"></i> Add </button></a>
           <div id = "add-div" class="modal">
             <div class="modal-content">
               <a class="closebutton" href="#">&times;</a>
@@ -72,8 +72,8 @@
                 <div class="input-div">
                   <input type="text" name="country" id="contactCountry" value="" placeholder="Country">
                 </div>
-                <a class="submit-btn" onclick="addContact();">Add <i class="fa fa-save"></i></a>
-                <span id="contactAddResult"></span>
+                <a onclick="addContact();" href = "#add-div"><button type = "button" class = "add-btn"><i class="fa fa-plus"></i> Add </button></a>
+                <span id="contactAddResult"></br></br>Contact Added</span>
               </form>
             </div>
             <a href="#" class="closeoverlay"></a>
@@ -90,7 +90,7 @@
     <div class = "sidebyside">
       <div class = "search-results">
         <h3> Results </h3>
-
+        
         <table id="table1" >        
         </table>
 
@@ -98,9 +98,82 @@
 
       <div class = "favorites">
           <h3> Favorites </h3>
-          <table id="table2" >        
+          <table id="table2" >
+            
           </table>
       </div>
+    </div>
+
+
+    <div class="wrap">
+        <div id = "contact-card" class="modal1">
+          <div class="modal-content">
+            <a class="closebutton" href="#container" onclick = "close();">&times;</a>
+
+                <div id = "nameP" class = "title">
+                  <h1>First Last</h1>
+                </div>
+                <div class = "main">
+                  <p id = "phoneP" class = "main"><i class="fa fa-phone info"></i>Phone</p>   
+                  <p id = "emailP" class = "main"><i class="fa fa-envelope info"></i>Email</p>   
+                  <p id = "LocationP" = "main"><i class="fa fa-home info"></i>Address</p>      
+                </div>
+                
+                <a href = "#edit" class = "edit-stuff"><button type = "submit" onclick = "loadEdit()" class = "edit-btn"><i class="fa fa-save"></i> Edit </button></a>             
+
+
+          </div>
+          <a href="#" class="closeoverlay"></a>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div id = "edit" class="modal">
+          <div class="modal-content">
+            <a class="closebutton" href="#">&times;</a>
+            <form action="" class="form">
+              <h2>Edit Contact</h2>
+              <div class="input-div row">
+                <div class="col-sm-6">
+                  <input type="text" name="newFirstName" id="editFirstName" value="" placeholder="First Name">
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" name="newLastName" id="editLastName" value="" placeholder="Last Name">
+                </div>
+        
+              </div>
+              <div class="input-div">
+                <input type="text" name="phoneNumber" id="editPhoneNumber" value="" placeholder="Phone Number">
+              </div>
+              <div class="input-div">
+                <input type="text" name="email" id="editcontactEmail" value="" placeholder="Email">
+              </div>
+              <div class="input-div">
+                <input type="text" name="street" id="editcontactStreet" value="" placeholder="Street">
+              </div>
+        
+              <div class="input-div row">
+                <div class="col-sm-4">
+                  <input type="text" name="city" id="editcontactCity" value="" placeholder="City">
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" name="state" id="editcontactState" value="" placeholder="State">
+                </div>
+                <div class="col-sm-4">
+                  <input type="text" name="zipCode" id="editcontactZipcode" value="" placeholder="Zip">
+                </div>
+              </div>
+        
+              <div class="input-div">
+                <input type="text" name="country" id="editcontactCountry" value="" placeholder="Country">
+              </div>
+              <a onclick="editContact();" href = "#contact-card"><button type = "button" class = "add-btn"><i class="fa fa-save"></i> Save </button></a>
+              <a onclick="deleteContact();" href = "#"><button type = "button" class = "add-btn"><i class="fa fa-delete"></i> Delete </button></a>
+              <span id="contactEditResult"></span>
+            </form>
+          </div>
+          <a href="#" class="closeoverlay"></a>
+        </div>
     </div>
 
   </div>
